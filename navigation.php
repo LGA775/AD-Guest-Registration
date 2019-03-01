@@ -47,10 +47,6 @@ if(!empty($_SESSION['user'])){
                 <a class="navbar-brand" href="index.php"> Guest Registration</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li><a href="#"></a></li>
-                    <li><a href="#"></a></li>
-                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="<?php echo $url; ?>index.php?logout">Logout</a></li>
                 </ul>

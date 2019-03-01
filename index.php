@@ -271,11 +271,12 @@ $access = $_SESSION['access'];
 $displayname = $_SESSION['displayname'];
 // We're in. 		
 ?>
+
 <div class="container" style="clear:both;">
 	<?php echo "<h2>Welcome, $displayname</h2>\n";?>
-	<div class="alert alert-warning" role="alert">
+	<!--<div class="alert alert-warning" role="alert">
 		<p>Notification alert</p>
-	</div>
+	</div>-->
 </div>
 <br />
 <!------------  Registration Form -------------------->
