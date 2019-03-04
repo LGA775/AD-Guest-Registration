@@ -51,7 +51,7 @@ if(isset($_GET['registered'])) {
 		$purpose = $sponsor.": ".$_POST['purpose'];
 		$location = $_POST['location'];
 		$guestusername = $_POST['guestusername'];
-		$account = "" . $guestusername;
+		$account = "Guest_" . $guestusername;
 		// Enter your account prefix in the double quotes above, this will make all guest usernames the prefix then their created name.
 		// Ex: $account = "Guest_" . $guestusername;
 		$pwdtxt = $_POST['guestpassword'];
@@ -88,36 +88,36 @@ if(isset($_GET['registered'])) {
 
 		// Active Directory Connection Later to be moved to config files instead of base -------------------------
 		// Active Directory IP
-		$adServer = "ldaps://";
+		$adServer = "ldaps://duffman.school.org/";
 		// Set your LDAP server url or ip here.  Should be LDAPS not regular LDAP connection - cannot add users over regular non secure.
 		// Ex:  $adServer = "ldaps://domain.com";			
 				 
 		// Active Directory DN
-		$base_dn = "DC=domain,DC=com";
+		$base_dn = "DC=school,DC=org";
 		// Set your base DN in the double quotes above  
 		// Ex:  $base_dn = "DC=domain,DC=com";
 					
 		// Active Directory domain name 
-		$ldaprdn = '' . "\\" . $user;
+		$ldaprdn = 'school\\' . $user;
 		// Set your domain short name for authentication  for the format domain\user
 		// Ex:  $ldaprdn = 'domain' . "\\" . $user;
 					
 		// Active Directory user group
-		$ldap_user_group = "";
+		$ldap_user_group = "aaa";
 		// Set this for your tech user group that exists in Active Directory - higher than normal users - gives higher "duration" options.
 		// Ex: $ldap_user_group = "TechUser";			
 				 
 		// Active Directory manager group
-		$ldap_manager_group = "";
+		$ldap_manager_group = "IT Team";
 		// Set this for your tech admin group that exists in Active Directory - higher than normal users - gives higher "duration" options.  Will also be used for admin options in the gui later on.
 		// Ex: $ldap_manager_group = "TechSuperAdmin";
 					
 		// Connect us --- do not edit below this 
-		$ldap = ldap_connect($adServer, 636);
-		ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-		ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
+		//$ldap = ldap_connect($adServer, 636);
+		//ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
+		//ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
 		// connect to active directory
-		$bind = @ldap_bind($ldap, $ldaprdn, $password);			 
+		//$bind = @ldap_bind($ldap, $ldaprdn, $password);			 
 					
 		// valid
 		// check presence in groups
@@ -126,7 +126,7 @@ if(isset($_GET['registered'])) {
 		$result = ldap_search($ldap,$base_dn,$filter,$details);
 		ldap_sort($ldap,$result,"sn");
 		$info = ldap_count_entries($ldap, $result);
-		ldap_close($ldap);
+		//ldap_close($ldap);
 		
 		// ----------------------  If account DOESN'T EXIST						 					
 		if ($info !=1){						
@@ -151,24 +151,24 @@ if(isset($_GET['registered'])) {
 			$ldaprecord["UserAccountControl"] = "512"; 
 			$r = ldap_add($ldap, $guestdn, $ldaprecord);
 			
-			ldap_close($ldap);
+			//ldap_close($ldap);
 			
 			// Add me to the guest group!
 			// Connect us!
-			$ldap = ldap_connect($adServer, 636);
-			ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-			ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
+			//$ldap = ldap_connect($adServer, 636);
+			//ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
+			//ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
 			// connect to active directory
-			$bind = @ldap_bind($ldap, $ldaprdn, $password);
+			//$bind = @ldap_bind($ldap, $ldaprdn, $password);
 		
 			// Edit the group name for guest DN					
-			$group_name = "";
+			$group_name = "CN=Guests,CN=Builtin,DC=school,DC=org";
 			// Ex: $group_name = "CN=Guest,OU=Groups,DC=domain,DC=com";
 			
 			$group_info["member"] = $guestdn; // User's DN is added to group's 'member' array
 			$gm = ldap_mod_add($ldap,$group_name,$group_info);
 			
-			ldap_close($ldap);
+			//ldap_close($ldap);
 			
 			/// End AD LDAP ---------------------------------
 ?>

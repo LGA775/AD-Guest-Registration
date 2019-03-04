@@ -67,7 +67,7 @@ function authenticate($user, $password) {
         $result = ldap_search($ldap,$base_dn,$filter,$details);
         ldap_sort($ldap,$result,"sn");
         $info = ldap_get_entries($ldap, $result);
-        ldap_unbind($ldap);
+        //ldap_unbind($ldap);
 
         //initialize access as 0
         $access = 0;
